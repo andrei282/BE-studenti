@@ -1,0 +1,48 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="andrei" id="create_view_v_valori_nomenclatoare">
+        <createView viewName="v_valori_nomenclator" >
+            select
+            row_number() OVER (ORDER BY n.cod) AS id,
+            n.id as "id_nomenclator",
+            n.cod as "cod",
+            c.cod as "camp",
+            c.denumire as "denumire_camp",
+            c.id as "id_camp",
+            c.tip_camp as "tip_camp",
+            v.valoare as "valoare",
+            l.id as "linie",
+            c.id_linked_by as "id_linked_by",
+            c.id_linked_by_camp as "id_linked_by_camp"
+            from nomenclator n
+            inner join linie l on n.id = l.id_nomenclator
+            inner join valoare v on v.id = v.id_linie
+            inner join camp c on c.id = v.id_camp
+        </createView>
+    </changeSet>
+
+    <changeSet author="andrei" id="create_view_v_valori_nomenclatoare_2">
+        <createView replaceIfExists="true" viewName="v_valori_nomenclator" >
+            select
+            row_number() OVER (ORDER BY n.cod) AS id,
+            n.id as "id_nomenclator",
+            n.cod as "cod",
+            nc.cod as "camp",
+            nc.denumire as "denumire_camp",
+            nc.id as "id_camp",
+            nc.tip_camp as "tip_camp",
+            nv.valoare as "valoare",
+            np.id as "linie",
+            nc.id_linked_by as "id_linked_by",
+            nc.id_linked_by_camp as "id_linked_by_camp"
+            from nomenclator n
+            inner join linie np on n.id = np.id_nomenclator
+            inner join valoare nv on np.id = nv.id_linie
+            inner join camp nc on nc.id = nv.id_camp
+        </createView>
+    </changeSet>
+</databaseChangeLog>
+

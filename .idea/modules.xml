@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BE_gestionare_studenti.iml" filepath="$PROJECT_DIR$/.idea/BE_gestionare_studenti.iml" />
+      <module fileurl="file://$PROJECT_DIR$/administrare-service/administrare-service.iml" filepath="$PROJECT_DIR$/administrare-service/administrare-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/components/components.iml" filepath="$PROJECT_DIR$/components/components.iml" />
+      <module fileurl="file://$PROJECT_DIR$/database/database.iml" filepath="$PROJECT_DIR$/database/database.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka-service/eureka-service.iml" filepath="$PROJECT_DIR$/eureka-service/eureka-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/gestionare-studenti-service/gestionare-studenti-service.iml" filepath="$PROJECT_DIR$/gestionare-studenti-service/gestionare-studenti-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/zuul-service/zuul-service.iml" filepath="$PROJECT_DIR$/zuul-service/zuul-service.iml" />

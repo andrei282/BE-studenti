@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="gestionare@localhost" uuid="ebd2a5fb-f9dd-4021-8b53-abb371b16041">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/gestionare</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="administrare@localhost" uuid="47109c56-9432-4754-b11d-7387a4bb0cc8">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/administrare</jdbc-url>
+    </data-source>
+  </component>
+</project>

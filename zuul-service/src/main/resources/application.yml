@@ -26,6 +26,10 @@ zuul:
       path: /gestionare-studenti/**
       serviceId: gestionare-studenti
       stripPrefix: true
+    administrare:
+      path: /administrare/**
+      serviceId: administrare-service
+      stripPrefix: true
   prefix: /api
 
 ribbon:

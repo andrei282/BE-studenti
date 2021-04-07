@@ -7,19 +7,31 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="components" />
         <module name="gestionare-studenti-service" />
+        <module name="administrare-service" />
+        <module name="database" />
         <module name="eureka-service" />
         <module name="zuul-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="administrare" target="11" />
+      <module name="administrare-service" target="11" />
+      <module name="components" target="1.11" />
+      <module name="database" target="11" />
       <module name="eureka-service" target="1.11" />
       <module name="gestionare-studenti-service" target="1.11" />
+      <module name="gestionare-studenti-service (1) (ro.tacheandrei.cercetare.components)" target="1.11" />
       <module name="zuul-service" target="1.11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="administrare" options="-parameters" />
+      <module name="administrare-service" options="-parameters" />
+      <module name="components" options="-parameters" />
+      <module name="database" options="-parameters" />
       <module name="eureka-service" options="-parameters" />
       <module name="gestionare-studenti-service" options="-parameters" />
       <module name="zuul-service" options="-parameters" />

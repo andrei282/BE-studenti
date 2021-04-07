@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="Andrei" id="create_tables_administrare">
+        <createTable tableName="camp">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="camp_pkey"/>
+            </column>
+            <column name="cod" type="VARCHAR(50)"/>
+            <column name="denumire" type="VARCHAR"/>
+            <column name="tip_camp" type="VARCHAR(50)" defaultValue="text"/>
+            <column name="id_nomenclator" type="BIGINT"/>
+            <column name="id_linked_by" type="BIGINT"/>
+            <column name="id_linked_by_camp" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="linie">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="linie_pkey"/>
+            </column>
+            <column name="id_nomenclator" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="nomenclator">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="nomenclator_pkey"/>
+            </column>
+            <column name="cod" type="VARCHAR(50)"/>
+            <column name="denumire" type="VARCHAR(50)"/>
+            <column name="allow_add" type="boolean" defaultValueBoolean="true"/>
+            <column name="allow_delete" type="boolean" defaultValueBoolean="true"/>
+            <column name="overwrite_cod" type="boolean" defaultValueBoolean="true"/>
+        </createTable>
+
+        <createTable tableName="valoare">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="valoare_pkey"/>
+            </column>
+            <column name="valoare" type="VARCHAR(255)"/>
+            <column name="id_camp" type="BIGINT"/>
+            <column name="id_linie" type="BIGINT"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="id_linie"
+                                 baseTableName="valoare"
+                                 constraintName="linie_valoare"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="linie"/>
+
+        <addForeignKeyConstraint baseColumnNames="id_nomenclator"
+                                 baseTableName="linie"
+                                 constraintName="nomenclator_linie"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="nomenclator"/>
+
+        <addForeignKeyConstraint baseColumnNames="id_nomenclator"
+                                 baseTableName="camp"
+                                 constraintName="nomenclator_camp"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="nomenclator"/>
+
+        <addForeignKeyConstraint baseColumnNames="id_linked_by"
+                                 baseTableName="camp"
+                                 constraintName="nomenclator_camp_linked_by"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="nomenclator"/>
+
+        <addForeignKeyConstraint baseColumnNames="id_linked_by_camp"
+                                 baseTableName="camp"
+                                 constraintName="camp_camp_linked_by"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="camp"/>
+
+        <addForeignKeyConstraint baseColumnNames="id_camp"
+                                 baseTableName="valoare"
+                                 constraintName="camp_valoare"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="camp"/>
+
+    </changeSet>
+
+</databaseChangeLog>

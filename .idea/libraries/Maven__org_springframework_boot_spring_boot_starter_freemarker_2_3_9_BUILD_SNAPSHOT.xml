@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.springframework.boot:spring-boot-starter-freemarker:2.3.9.BUILD-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-freemarker/2.3.9.BUILD-SNAPSHOT/spring-boot-starter-freemarker-2.3.9.BUILD-20210209.145112-27.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-freemarker/2.3.9.BUILD-SNAPSHOT/spring-boot-starter-freemarker-2.3.9.BUILD-20210218.084448-52.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-freemarker/2.3.9.BUILD-SNAPSHOT/spring-boot-starter-freemarker-2.3.9.BUILD-20210209.145112-27-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-freemarker/2.3.9.BUILD-SNAPSHOT/spring-boot-starter-freemarker-2.3.9.BUILD-20210218.084448-52-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-freemarker/2.3.9.BUILD-SNAPSHOT/spring-boot-starter-freemarker-2.3.9.BUILD-20210209.145112-27-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-freemarker/2.3.9.BUILD-SNAPSHOT/spring-boot-starter-freemarker-2.3.9.BUILD-20210218.084448-52-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

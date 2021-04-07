@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="Andrei" id="config_materie">
+        <insert tableName="nomenclator">
+            <column name="cod" value="materie"/>
+            <column name="denumire" value="Materie"/>
+        </insert>
+        <insert tableName="camp">
+            <column name="cod" value="cod"/>
+            <column name="denumire" value="Cod"/>
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='materie')"/>
+        </insert>
+        <insert tableName="camp">
+            <column name="cod" value="denumire"/>
+            <column name="denumire" value="Denumire"/>
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='materie')"/>
+        </insert>
+        <insert tableName="camp">
+            <column name="cod" value="abreviere"/>
+            <column name="denumire" value="Abreviere"/>
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='materie')"/>
+        </insert>
+        <insert tableName="camp">
+            <column name="cod" value="profesor"/>
+            <column name="denumire" value="Profesor"/>
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='materie')"/>
+        </insert>
+        <insert tableName="camp">
+            <column name="cod" value="masterat"/>
+            <column name="denumire" value="Masterat"/>
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='materie')"/>
+            <column name="id_linked_by_camp" valueComputed="(SELECT id from camp where cod='cod' and id_nomenclator =
+                                                (SELECT id from nomenclator where cod='masterat'))"/>
+            <column name="id_linked_by" valueComputed="(SELECT id from nomenclator where cod='masterat')"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

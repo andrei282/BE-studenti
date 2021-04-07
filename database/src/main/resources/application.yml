@@ -1,0 +1,8 @@
+datasource:
+  administrare:
+    url: jdbc:postgresql://localhost:5432/administrare
+    username: postgres
+    password: andrei
+    driver-class-name: org.postgresql.Driver
+    liquibase:
+      change-log: classpath:/db/changelog/administrare/master.xml

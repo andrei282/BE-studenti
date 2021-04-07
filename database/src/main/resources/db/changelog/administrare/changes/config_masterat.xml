@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="Andrei" id="config_master">
+        <insert tableName="nomenclator">
+            <column name="cod" value="masterat"/>
+            <column name="denumire" value="Masterat"/>
+        </insert>
+        <insert tableName="camp">
+            <column name="cod" value="cod"/>
+            <column name="denumire" value="Cod"/>
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='masterat')"/>
+        </insert>
+        <insert tableName="camp">
+            <column name="cod" value="denumire"/>
+            <column name="denumire" value="Denumire"/>
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='masterat')"/>
+        </insert>
+        <insert tableName="camp">
+            <column name="cod" value="abreviere"/>
+            <column name="denumire" value="Abreviere"/>
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='masterat')"/>
+        </insert>
+        <insert tableName="camp">
+            <column name="cod" value="coordonator"/>
+            <column name="denumire" value="Coordonator"/>
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='masterat')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Andrei" id="masterat_tsac">
+        <insert tableName="linie">
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='masterat')"/>
+        </insert>
+        <insert tableName="valoare">
+            <column name="valoare" value="tehnologii_software_avansate_comunicatii"/>
+            <column name="id_camp" valueComputed="(SELECT c.id from camp c
+                                                    inner join nomenclator n on n.id = c.id_nomenclator
+                                                    where c.cod='cod' and n.cod='masterat')"/>
+            <column name="id_linie" valueNumeric="currval('linie_id_seq')"/>
+        </insert>
+        <insert tableName="valoare">
+            <column name="valoare" value="Tehnologii Software Avansate pentru Telecomunicatii"/>
+            <column name="id_camp" valueComputed="(SELECT c.id from camp c
+                                                    inner join nomenclator n on n.id = c.id_nomenclator
+                                                    where c.cod='denumire' and n.cod='masterat')"/>
+            <column name="id_linie" valueNumeric="currval('linie_id_seq')"/>
+        </insert>
+        <insert tableName="valoare">
+            <column name="valoare" value="TSAC"/>
+            <column name="id_camp" valueComputed="(SELECT c.id from camp c
+                                                    inner join nomenclator n on n.id = c.id_nomenclator
+                                                    where c.cod='abreviere' and n.cod='masterat')"/>
+            <column name="id_linie" valueNumeric="currval('linie_id_seq')"/>
+        </insert>
+        <insert tableName="valoare">
+            <column name="valoare" value="John Doe"/>
+            <column name="id_camp" valueComputed="(SELECT c.id from camp c
+                                                    inner join nomenclator n on n.id = c.id_nomenclator
+                                                    where c.cod='coordonator' and n.cod='masterat')"/>
+            <column name="id_linie" valueNumeric="currval('linie_id_seq')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Andrei" id="masterat_cmob">
+        <insert tableName="linie">
+            <column name="id_nomenclator" valueComputed="(SELECT id from nomenclator where cod='masterat')"/>
+        </insert>
+        <insert tableName="valoare">
+            <column name="valoare" value="comunicatii_mobile"/>
+            <column name="id_camp" valueComputed="(SELECT c.id from camp c
+                                                    inner join nomenclator n on n.id = c.id_nomenclator
+                                                    where c.cod='cod' and n.cod='masterat')"/>
+            <column name="id_linie" valueNumeric="currval('linie_id_seq')"/>
+        </insert>
+        <insert tableName="valoare">
+            <column name="valoare" value="Comunicatii Mobile"/>
+            <column name="id_camp" valueComputed="(SELECT c.id from camp c
+                                                    inner join nomenclator n on n.id = c.id_nomenclator
+                                                    where c.cod='denumire' and n.cod='masterat')"/>
+            <column name="id_linie" valueNumeric="currval('linie_id_seq')"/>
+        </insert>
+        <insert tableName="valoare">
+            <column name="valoare" value="CMob"/>
+            <column name="id_camp" valueComputed="(SELECT c.id from camp c
+                                                    inner join nomenclator n on n.id = c.id_nomenclator
+                                                    where c.cod='abreviere' and n.cod='masterat')"/>
+            <column name="id_linie" valueNumeric="currval('linie_id_seq')"/>
+        </insert>
+        <insert tableName="valoare">
+            <column name="valoare" value="Ion Popescu"/>
+            <column name="id_camp" valueComputed="(SELECT c.id from camp c
+                                                    inner join nomenclator n on n.id = c.id_nomenclator
+                                                    where c.cod='coordonator' and n.cod='masterat')"/>
+            <column name="id_linie" valueNumeric="currval('linie_id_seq')"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>
