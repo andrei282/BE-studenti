@@ -26,7 +26,7 @@ zuul:
       path: /gestionare-studenti/**
       serviceId: gestionare-studenti
       stripPrefix: true
-    administrare:
+    administrare-service:
       path: /administrare/**
       serviceId: administrare-service
       stripPrefix: true
