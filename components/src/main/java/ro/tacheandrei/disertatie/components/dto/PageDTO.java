@@ -1,4 +1,4 @@
-package ro.tacheandrei.diseratie.administrare.dto;
+package ro.tacheandrei.disertatie.components.dto;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;

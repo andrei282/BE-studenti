@@ -10,7 +10,7 @@ import ro.tacheandrei.diseratie.administrare.domain.Nomenclator;
 import ro.tacheandrei.diseratie.administrare.dto.CampDTO;
 import ro.tacheandrei.diseratie.administrare.dto.LinieDTO;
 import ro.tacheandrei.diseratie.administrare.dto.NomenclatorDTO;
-import ro.tacheandrei.diseratie.administrare.dto.PageDTO;
+import ro.tacheandrei.disertatie.components.dto.PageDTO;
 import ro.tacheandrei.diseratie.administrare.service.NomenclatoareGridService;
 import ro.tacheandrei.diseratie.administrare.service.NomenclatorService;
 import ro.tacheandrei.disertatie.components.table.PageRequestDTO;
@@ -24,7 +24,6 @@ import java.util.List;
 public class NomenclatorController {
 
     private final NomenclatorService nomenclatorService;
-//    private final NomenclatorApiService nomenclatorApiService;
     private final NomenclatoareGridService nomenclatoareGridService;
 
     @PostMapping("/linie")

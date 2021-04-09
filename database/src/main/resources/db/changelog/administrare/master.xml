@@ -11,5 +11,6 @@
     <include file="db/changelog/administrare/changes/config_masterat.xml"/>
     <include file="db/changelog/administrare/changes/config_materie.xml"/>
     <include file="db/changelog/administrare/changes/config_proiect.xml"/>
+    <include file="db/changelog/administrare/changes/config_coloane.xml"/>
 
 </databaseChangeLog>

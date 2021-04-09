@@ -3,7 +3,9 @@ package ro.tacheandrei.diseratie.administrare.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ro.tacheandrei.diseratie.administrare.domain.Nomenclator;
 import ro.tacheandrei.diseratie.administrare.domain.ValoriNomenclator;
 import ro.tacheandrei.diseratie.administrare.repository.NomenclatorRepository;
@@ -24,16 +26,17 @@ public class NomenclatorApiService {
 
     public List<JsonNode> cautaNomenclatorByCod(NomenclatorRequestDTO nomenclatorRequestDTO, boolean withLinks) {
         final String codNomenclator = nomenclatorRequestDTO.getCod();
-        final Nomenclator nomenclator = nomenclatorRepository.findByCod(codNomenclator);
+        final Nomenclator nomenclator = nomenclatorRepository.findByCod(codNomenclator)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Nomenclatorul nu este gasit"));
 
         List<ValoriNomenclator> valoriNomenclator = valoriNomenclatorRepository.findAllByCod(nomenclator.getCod());
 
         List<JsonNode> result = calculLiniiNomenclatoareService.calculeazaLiniiToDTO(valoriNomenclator, nomenclator.getCampSet(), withLinks, true);
 
-        if(NomenclatorEnum.MASTERAT.getValue().equals(codNomenclator)){
+        if (NomenclatorEnum.MASTERAT.getValue().equals(codNomenclator)) {
             adaugaMaterie(result);
         }
-        if(NomenclatorEnum.MATERIE.getValue().equals(codNomenclator)){
+        if (NomenclatorEnum.MATERIE.getValue().equals(codNomenclator)) {
             adaugaProiecte(result);
         }
 
@@ -48,10 +51,9 @@ public class NomenclatorApiService {
                         .putArray("proiecte")
                         .addAll(
                                 proiecte.stream()
-                                        .filter(proiect ->
-                                                proiect.get("materie") != null &&
-                                                        materie.get("cod") != null &&
-                                                        proiect.get("materie").asLong() == materie.get("cod").asLong()
+                                        .filter(proiect -> proiect.get("materie") != null &&
+                                                materie.get("cod") != null &&
+                                                proiect.get("materie").asText() == materie.get("cod").asText()
                                         )
                                         .collect(Collectors.toList())
                         ))
@@ -66,10 +68,9 @@ public class NomenclatorApiService {
                         .putArray("materii")
                         .addAll(
                                 materii.stream()
-                                        .filter(m ->
-                                                m.get("masterat") != null &&
-                                                        masterat.get("cod") != null &&
-                                                        m.get("masterat").asLong() == masterat.get("cod").asLong()
+                                        .filter(m -> m.get("masterat") != null &&
+                                                masterat.get("cod") != null &&
+                                                m.get("masterat").asText().equals(masterat.get("cod").asText())
                                         )
                                         .collect(Collectors.toList())
                         ))

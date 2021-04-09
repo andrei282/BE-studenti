@@ -1,12 +1,12 @@
 package ro.tacheandrei.diseratie.gestionarestudenti.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ro.tacheandrei.diseratie.gestionarestudenti.feign.NomenclatorFeign;
-import ro.tacheandrei.disertatie.components.dto.NomenclatorRequestDTO;
+import ro.tacheandrei.diseratie.gestionarestudenti.service.NomenclatorService;
+import ro.tacheandrei.disertatie.components.dto.PageDTO;
+import ro.tacheandrei.disertatie.components.table.PageRequestDTO;
+import ro.tacheandrei.disertatie.components.table.TableListDTO;
 
 import java.util.List;
 
@@ -15,10 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 public class NomenclatorController {
 
+    private final NomenclatorService nomenclatorService;
     private final NomenclatorFeign nomenclatorFeign;
 
-    @PostMapping
-    public List<Object> getNomenclatorByCod(@RequestBody NomenclatorRequestDTO nomenclatorRequestDTO){
-        return nomenclatorFeign.getNomenclatorByCod(nomenclatorRequestDTO);
+    @GetMapping("/{cod}")
+    public <T> List<T> getNomenclatorByCod(@PathVariable String cod){
+        return nomenclatorService.getNomenclatorByCod(cod);
     }
+
+    @PostMapping("/{proiect}/{cod}")
+    public TableListDTO<PageDTO> getGridNomenclatoareByCod(@PathVariable String cod, @PathVariable String proiect, @RequestBody PageRequestDTO pageRequestDTO){
+        return nomenclatorFeign.getGridNomenclatoareByCod(proiect, cod, pageRequestDTO);
+    }
+
 }

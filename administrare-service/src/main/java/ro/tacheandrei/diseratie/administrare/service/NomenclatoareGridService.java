@@ -1,7 +1,6 @@
 package ro.tacheandrei.diseratie.administrare.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ro.tacheandrei.diseratie.administrare.domain.Camp;
 import ro.tacheandrei.diseratie.administrare.domain.Nomenclator;
 import ro.tacheandrei.diseratie.administrare.domain.ValoriNomenclator;
-import ro.tacheandrei.diseratie.administrare.dto.PageDTO;
+import ro.tacheandrei.disertatie.components.dto.PageDTO;
 import ro.tacheandrei.diseratie.administrare.repository.CampRepository;
 import ro.tacheandrei.diseratie.administrare.repository.NomenclatorRepository;
 import ro.tacheandrei.diseratie.administrare.repository.ValoriNomenclatorRepository;
@@ -117,4 +116,71 @@ public class NomenclatoareGridService {
     }
 
 
+    public TableListDTO<PageDTO> cautaValoriNomenclatoareByCod(String cod, PageRequestDTO pageRequestDTO) {
+        Nomenclator nomenclator = nomenclatorRepository.findByCod(cod)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Nomenclatorul nu este gasit"));
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "idLinie");
+
+        GenericSpecification<ValoriNomenclator> specification = new GenericSpecification<>(pageRequestDTO.getFilterModel());
+
+        specification.addExtraCriteria(
+                Collections.singletonList(
+                        new SearchCriteria("valoare", cod, SearchOperation.EQUAL, FilterType.NUMBER)
+                )
+        );
+
+        Page<ValoriNomenclator> pagedResult = valoriNomenclatorRepository.findAll(specification, pageable);
+
+        List<FieldDescriptor> fieldDescriptors = new ArrayList<>();
+        nomenclator.getCampSet()
+                .forEach((camp) -> {
+                    String fieldType = "String";
+                    FieldDescriptor fieldDescriptor = new FieldDescriptor(camp.getDenumire(), fieldType, camp.getCod());
+                    fieldDescriptor.setFieldType(fieldType);
+                    fieldDescriptors.add(fieldDescriptor);
+                });
+
+        List<JsonNode> fakeDTO = calculLiniiNomenclatoareService.calculeazaLiniiToDTO(pagedResult.getContent(), nomenclator.getCampSet(), true, false);
+
+        fakeDTO.sort(Comparator.comparing(lhs -> lhs.get("id").toString(), Comparator.reverseOrder()));
+
+        PageDTO fakePage = new PageDTO(fakeDTO, pagedResult.getTotalElements() / nomenclator.getCampSet().size());
+
+        return new TableListDTO<>(fakePage, fieldDescriptors);
+    }
+
+    public TableListDTO<PageDTO> cautaValoriNomenclatoareByProiect(String proiect, String cod, PageRequestDTO pageRequestDTO) {
+        Nomenclator nomenclator = nomenclatorRepository.findByCod(proiect)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Nomenclatorul nu este gasit"));
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "idLinie");
+
+        GenericSpecification<ValoriNomenclator> specification = new GenericSpecification<>(pageRequestDTO.getFilterModel());
+
+        specification.addExtraCriteria(
+                Collections.singletonList(
+                        new SearchCriteria("valoare", cod, SearchOperation.EQUAL, FilterType.NUMBER)
+                )
+        );
+
+        Page<ValoriNomenclator> pagedResult = valoriNomenclatorRepository.findAll(specification, pageable);
+
+        List<FieldDescriptor> fieldDescriptors = new ArrayList<>();
+        nomenclator.getCampSet()
+                .forEach((camp) -> {
+                    String fieldType = "String";
+                    FieldDescriptor fieldDescriptor = new FieldDescriptor(camp.getDenumire(), fieldType, camp.getCod());
+                    fieldDescriptor.setFieldType(fieldType);
+                    fieldDescriptors.add(fieldDescriptor);
+                });
+
+        List<JsonNode> fakeDTO = calculLiniiNomenclatoareService.calculeazaLiniiToDTO(pagedResult.getContent(), nomenclator.getCampSet(), true, false);
+
+        fakeDTO.sort(Comparator.comparing(lhs -> lhs.get("id").toString(), Comparator.reverseOrder()));
+
+        PageDTO fakePage = new PageDTO(fakeDTO, pagedResult.getTotalElements() / nomenclator.getCampSet().size());
+
+        return new TableListDTO<>(fakePage, fieldDescriptors);
+    }
 }
