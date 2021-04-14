@@ -18,7 +18,7 @@
     <bytecodeTargetLevel>
       <module name="administrare" target="11" />
       <module name="administrare-service" target="11" />
-      <module name="components" target="1.11" />
+      <module name="components" target="1.8" />
       <module name="database" target="11" />
       <module name="eureka-service" target="1.11" />
       <module name="gestionare-studenti-service" target="1.11" />

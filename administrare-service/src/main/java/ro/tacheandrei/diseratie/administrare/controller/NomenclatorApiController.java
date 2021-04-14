@@ -3,12 +3,10 @@ package ro.tacheandrei.diseratie.administrare.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ro.tacheandrei.disertatie.components.dto.PageDTO;
+import ro.tacheandrei.diseratie.administrare.dto.ValoriNomenclatorDTO;
 import ro.tacheandrei.diseratie.administrare.service.NomenclatoareGridService;
 import ro.tacheandrei.diseratie.administrare.service.NomenclatorApiService;
 import ro.tacheandrei.disertatie.components.dto.NomenclatorRequestDTO;
-import ro.tacheandrei.disertatie.components.table.PageRequestDTO;
-import ro.tacheandrei.disertatie.components.table.TableListDTO;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,10 +24,13 @@ public class NomenclatorApiController {
         return nomenclatorApiService.cautaNomenclatorByCod(nomenclatorRequest, true);
     }
 
-    @PostMapping("/{proiect}/{cod}")
-    public TableListDTO<PageDTO> cautaValoriNomenclatoare(@PathVariable String cod,
-                                                          @PathVariable String proiect,
-                                                          @RequestBody PageRequestDTO pageRequestDTO) {
-        return nomenclatoareGridService.cautaValoriNomenclatoareByProiect(proiect, cod, pageRequestDTO);
+    @GetMapping("/coloane/{cod}")
+    public List<ValoriNomenclatorDTO> cautaValoriNomenclatoare(@PathVariable String cod) {
+        return nomenclatoareGridService.cautaValoriNomenclatoareByProiect(cod);
+    }
+
+    @PostMapping("/id")
+    public JsonNode cautaNomenclatorByCodAndId(@RequestBody @Valid NomenclatorRequestDTO nomenclatorRequest) {
+        return nomenclatorApiService.cautaNomenclatorByCodAndId(nomenclatorRequest);
     }
 }

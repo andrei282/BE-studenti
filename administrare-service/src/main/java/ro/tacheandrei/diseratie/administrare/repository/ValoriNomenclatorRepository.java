@@ -2,6 +2,7 @@ package ro.tacheandrei.diseratie.administrare.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import ro.tacheandrei.diseratie.administrare.domain.ValoriNomenclator;
 
 import java.util.List;
@@ -23,5 +24,10 @@ public interface ValoriNomenclatorRepository  extends JpaRepository<ValoriNomenc
     List<ValoriNomenclator> findAllByCampAndIdLinieIn(String camp, List<Long> idLinieList);
 
     boolean existsByCodAndCampAndValoareAndIdLinieNot(String cod, String camp, String valoare, Long id);
+
+    @Query("SELECT V FROM v_valori_nomenclator V WHERE V.idNomenclator IN" +
+            "(SELECT V.idNomenclator FROM v_valori_nomenclator V WHERE V.idLinkedByCamp = " +
+            "(SELECT V.idCamp FROM v_valori_nomenclator V WHERE V.valoare = :proiect AND V.camp='cod'))")
+    List<ValoriNomenclator> findColumnsByProiect(String proiect);
 
 }

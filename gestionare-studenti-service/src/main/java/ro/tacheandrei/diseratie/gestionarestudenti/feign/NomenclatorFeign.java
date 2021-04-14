@@ -1,13 +1,13 @@
 package ro.tacheandrei.diseratie.gestionarestudenti.feign;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import ro.tacheandrei.diseratie.gestionarestudenti.dto.ValoriNomenclatorDTO;
 import ro.tacheandrei.disertatie.components.dto.NomenclatorRequestDTO;
-import ro.tacheandrei.disertatie.components.dto.PageDTO;
-import ro.tacheandrei.disertatie.components.table.PageRequestDTO;
-import ro.tacheandrei.disertatie.components.table.TableListDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +18,9 @@ public interface NomenclatorFeign {
     @PostMapping("/api/nomenclatoare")
     List<Map<String, Object>> getNomenclatorByCod(@RequestBody NomenclatorRequestDTO nomenclatorRequestDTO);
 
-    @PostMapping("/api/nomenclatoare/{proiect}/{cod}")
-    TableListDTO<PageDTO> getGridNomenclatoareByCod(@PathVariable String proiect, @PathVariable  String cod, @RequestBody PageRequestDTO pageRequestDTO);
+    @GetMapping("/api/nomenclatoare/coloane/{cod}")
+    List<ValoriNomenclatorDTO> getGridNomenclatoareByCod(@PathVariable  String cod);
+
+    @PostMapping("/api/nomenclatoare/id")
+    JsonNode cautaNomenclatorByCodAndId(NomenclatorRequestDTO nomenclatorRequest);
 }

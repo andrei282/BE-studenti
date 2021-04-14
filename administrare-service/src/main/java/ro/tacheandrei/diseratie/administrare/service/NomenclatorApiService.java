@@ -76,4 +76,19 @@ public class NomenclatorApiService {
                         ))
         );
     }
+
+    public JsonNode cautaNomenclatorByCodAndId(NomenclatorRequestDTO nomenclatorRequest) {
+
+        if (nomenclatorRequest.getId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "id este required");
+        }
+
+        List<JsonNode> jsonNodes = cautaNomenclatorByCod(nomenclatorRequest, true);
+
+        return jsonNodes
+                .stream()
+                .filter(n -> n.get("id") != null && n.get("id").asLong() == nomenclatorRequest.getId())
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "nomenclatorul cu id: " + nomenclatorRequest.getId() + " nu a fost gasit"));
+    }
 }
