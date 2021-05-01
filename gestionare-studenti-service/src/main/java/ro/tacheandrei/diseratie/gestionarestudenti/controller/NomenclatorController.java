@@ -13,6 +13,8 @@ import ro.tacheandrei.disertatie.components.table.TableListDTO;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/nomenclatoare")
@@ -35,6 +37,31 @@ public class NomenclatorController {
     @PostMapping("/id")
     public JsonNode cautaNomenclatorByCodAndId(@RequestBody @Valid NomenclatorRequestDTO nomenclatorRequest) {
         return nomenclatorFeign.cautaNomenclatorByCodAndId(nomenclatorRequest);
+    }
+
+    @PostMapping("/linii")
+    public Map<Long, JsonNode> cautaNomenclatorByCodAndId(@RequestBody List<Long> idsLinii) {
+        return nomenclatorFeign.cautaLinii(idsLinii);
+    }
+
+    @PostMapping("/detalii")
+    public JsonNode cautaDetaliiNomenclatorByCod(@RequestBody @Valid NomenclatorRequestDTO nomenclatorRequest) {
+        return nomenclatorFeign.cautaDetaliiNomenclatorByCod(nomenclatorRequest);
+    }
+
+    @GetMapping("/campuri/{idNomenclator}")
+    public List<JsonNode> cautaCampuriByNomenclatorId(@PathVariable Long idNomenclator) {
+        return nomenclatorFeign.cautaCampuriByNomenclatorId(idNomenclator);
+    }
+
+    @PostMapping("/byId/{idNomenclator}")
+    public List<JsonNode> cautaValoriNomenclatoare(@PathVariable Long idNomenclator, @RequestBody Set<Long> ids) {
+        return nomenclatorFeign.cautaValoriNomenclatoare(idNomenclator, ids);
+    }
+
+    @PostMapping("/save-linii")
+    public List<JsonNode> salveazaLinii(@RequestBody List<Map<String, Object>> linii){
+        return nomenclatorFeign.salveazaLinii(linii);
     }
 
 }

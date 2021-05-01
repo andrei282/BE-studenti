@@ -11,6 +11,7 @@ import ro.tacheandrei.disertatie.components.dto.NomenclatorRequestDTO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @FeignClient(name = "administrare-service")
 public interface NomenclatorFeign {
@@ -22,5 +23,20 @@ public interface NomenclatorFeign {
     List<ValoriNomenclatorDTO> getGridNomenclatoareByCod(@PathVariable  String cod);
 
     @PostMapping("/api/nomenclatoare/id")
-    JsonNode cautaNomenclatorByCodAndId(NomenclatorRequestDTO nomenclatorRequest);
+    JsonNode cautaNomenclatorByCodAndId(@RequestBody NomenclatorRequestDTO nomenclatorRequest);
+
+    @PostMapping("/api/nomenclatoare/linii")
+    Map<Long, JsonNode> cautaLinii(@RequestBody List<Long> idsLinii);
+
+    @PostMapping("/api/nomenclatoare/detalii")
+    JsonNode cautaDetaliiNomenclatorByCod(@RequestBody NomenclatorRequestDTO nomenclatorRequest);
+
+    @GetMapping("/api/nomenclatoare/campuri/{idNomenclator}")
+    List<JsonNode> cautaCampuriByNomenclatorId(@PathVariable Long idNomenclator);
+
+    @PostMapping("/api/nomenclatoare/{idNomenclator}")
+    List<JsonNode> cautaValoriNomenclatoare(@PathVariable Long idNomenclator, @RequestBody Set<Long> ids);
+
+    @PostMapping("/api/nomenclatoare/save-linii")
+    List<JsonNode> salveazaLinii(@RequestBody List<Map<String, Object>> linii);
 }

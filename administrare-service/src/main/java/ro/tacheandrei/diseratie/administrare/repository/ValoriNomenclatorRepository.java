@@ -28,6 +28,13 @@ public interface ValoriNomenclatorRepository  extends JpaRepository<ValoriNomenc
     @Query("SELECT V FROM v_valori_nomenclator V WHERE V.idNomenclator IN" +
             "(SELECT V.idNomenclator FROM v_valori_nomenclator V WHERE V.idLinkedByCamp = " +
             "(SELECT V.idCamp FROM v_valori_nomenclator V WHERE V.valoare = :proiect AND V.camp='cod'))")
-    List<ValoriNomenclator> findColumnsByProiect(String proiect);
+    List<ValoriNomenclator> findAllColumns(String proiect);
 
+    ValoriNomenclator findByValoareAndCamp(String valoare, String camp);
+
+    List<ValoriNomenclator> findAllByValoare(String valoare);
+
+    List<ValoriNomenclator> findAllByValoareIn(Set<String> valori);
+
+    List<ValoriNomenclator> findAllByIdLinieIn(Set<Long> linii);
 }

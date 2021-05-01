@@ -1,6 +1,8 @@
 package ro.tacheandrei.diseratie.administrare.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ import ro.tacheandrei.disertatie.components.filter.SearchOperation;
 import ro.tacheandrei.disertatie.components.table.*;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +52,7 @@ public class NomenclatoareGridService {
         Nomenclator nomenclator = nomenclatorRepository.findById(idNomenclator)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Nomenclatorul nu este gasit"));
 
-        Pageable pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "idLinie");
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), 10, Sort.Direction.ASC, "idLinie");
 
         GenericSpecification<ValoriNomenclator> specification = new GenericSpecification<>(pageRequestDTO.getFilterModel());
 
@@ -59,7 +62,7 @@ public class NomenclatoareGridService {
                 )
         );
 
-        Page<ValoriNomenclator> pagedResult = valoriNomenclatorRepository.findAll(specification, pageable);
+        List<ValoriNomenclator> pagedResult = valoriNomenclatorRepository.findAll(specification);
 
         List<FieldDescriptor> fieldDescriptors = new ArrayList<>();
         nomenclator.getCampSet()
@@ -70,11 +73,17 @@ public class NomenclatoareGridService {
                     fieldDescriptors.add(fieldDescriptor);
                 });
 
-        List<JsonNode> fakeDTO = calculLiniiNomenclatoareService.calculeazaLiniiToDTO(pagedResult.getContent(), nomenclator.getCampSet(), true, false);
+        List<JsonNode> fakeDTO = calculLiniiNomenclatoareService.calculeazaLiniiToDTO(pagedResult, nomenclator.getCampSet(), true, false);
 
         fakeDTO.sort(Comparator.comparing(lhs -> lhs.get("id").toString(), Comparator.reverseOrder()));
 
-        PageDTO fakePage = new PageDTO(fakeDTO, pagedResult.getTotalElements() / nomenclator.getCampSet().size());
+        int firstElement = pageRequestDTO.getPage() * pageRequestDTO.getPageSize();
+        int lastElement = (pageRequestDTO.getPage() + 1) * pageRequestDTO.getPageSize();
+        if(lastElement > fakeDTO.size()){
+            lastElement = fakeDTO.size() % pageRequestDTO.getPageSize() + firstElement;
+        }
+        fakeDTO = fakeDTO.subList(firstElement, lastElement);
+        PageDTO fakePage = new PageDTO(fakeDTO, (long) (pagedResult.size() / nomenclator.getCampSet().size()));
 
         return new TableListDTO<>(fakePage, fieldDescriptors);
     }
@@ -116,6 +125,51 @@ public class NomenclatoareGridService {
                 .collect(Collectors.toList());
     }
 
+    public List<JsonNode> cautaValoriNomenclatoareByIdAndLinii(Long idNomenclator, Set<Long> idsLinii) {
+        final ObjectMapper mapper = new ObjectMapper();
+        List<Camp> campuri = campRepository.findAllByNomenclatorId(idNomenclator);
+        List<ValoriNomenclator> valoriNom = valoriNomenclatorRepository.findAllByIdNomenclator(idNomenclator);
+
+        List<JsonNode> nodeList = calculLiniiNomenclatoareService
+                .calculeazaLiniiToDTO(valoriNom, campuri, true, false)
+                .stream()
+                .filter(node -> idsLinii.contains(node.get("id").asLong()))
+                .map(node -> {
+                    ((ObjectNode)node).put("id", node.get("id").asText());
+                    return node;
+                })
+                .collect(Collectors.toList());
+
+        Set<Long> liniiColoane = valoriNomenclatorRepository
+                .findAllByValoareIn(idsLinii.stream().map(String::valueOf).collect(Collectors.toSet()))
+                .stream()
+                .map(ValoriNomenclator::getIdLinie)
+                .collect(Collectors.toSet());
+
+        Map<Long, List<ValoriNomenclator>> groupedByLinie = valoriNomenclatorRepository
+                .findAllByIdLinieIn(liniiColoane)
+                .stream()
+                .collect(Collectors.groupingBy(ValoriNomenclator::getIdLinie));
+
+        nodeList
+                .forEach(node -> {
+                    Long id = node.get("id").asLong();
+                    groupedByLinie.forEach((k, v) -> {
+                        if(v.stream().map(ValoriNomenclator::getValoare).collect(Collectors.toList()).contains(String.valueOf(id))){
+                            if(node.has("valoriColoane")){
+                                v.forEach(lista ->
+                                    ((ArrayNode) node.get("valoriColoane")).add(mapper.convertValue(lista, JsonNode.class))
+                                );
+                            } else{
+                                ((ObjectNode)node).put("valoriColoane", mapper.convertValue(v, JsonNode.class));
+                            }
+                        }
+                    });
+                });
+
+        return nodeList;
+    }
+
 
     public TableListDTO<PageDTO> cautaValoriNomenclatoareByCod(String cod, PageRequestDTO pageRequestDTO) {
         Nomenclator nomenclator = nomenclatorRepository.findByCod(cod)
@@ -153,10 +207,23 @@ public class NomenclatoareGridService {
 
     public List<ValoriNomenclatorDTO> cautaValoriNomenclatoareByProiect(String cod) {
 
-        return valoriNomenclatorRepository
-                .findColumnsByProiect(cod)
+        List<ValoriNomenclatorDTO> allColumns = valoriNomenclatorRepository
+                .findAllColumns(cod)
                 .stream()
                 .map(ValoriNomenclatorDTO::from)
+                .collect(Collectors.toList());
+
+        ValoriNomenclator valoreProiect = valoriNomenclatorRepository.findByValoareAndCamp(cod, "cod");
+
+        List<Long> liniiProiectCautat = valoriNomenclatorRepository
+                .findAllByValoare(String.valueOf(valoreProiect.getIdLinie()))
+                .stream()
+                .map(ValoriNomenclator::getIdLinie)
+                .collect(Collectors.toList());
+
+        return allColumns
+                .stream()
+                .filter(vn -> liniiProiectCautat.contains(vn.getIdLinie()))
                 .collect(Collectors.toList());
     }
 }
