@@ -27,4 +27,24 @@ eureka:
     server:
       waitTimeInMsWhenSyncEmpty: 0
 
-
+keycloak:
+  realm: universitate
+  auth-server-url: http://localhost:9000/auth
+  ssl-required: external
+  resource: administrare
+  bearer-only: true
+  credentials:
+    secret: ab5e4899-ddba-4c39-8bc9-77841fec0387
+  use-resource-role-mappings: true
+  principal-attribute: preffered_username
+  security-constraints:
+    - authRoles:
+        - ADMINISTRARE_ADMIN
+      securityCollections:
+        - patterns:
+            - /nomenclatoare/**
+    - authRoles:
+        - ADMINISTRARE_PROFESOR
+      securityCollections:
+        - patterns:
+            - /nomenclatoare/**

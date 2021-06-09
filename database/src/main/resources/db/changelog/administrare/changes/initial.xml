@@ -45,7 +45,6 @@
             <column name="id_camp" type="BIGINT"/>
             <column name="id_linie" type="BIGINT"/>
         </createTable>
-
         <addForeignKeyConstraint baseColumnNames="id_linie"
                                  baseTableName="valoare"
                                  constraintName="linie_valoare"
@@ -55,7 +54,6 @@
                                  onUpdate="NO ACTION"
                                  referencedColumnNames="id"
                                  referencedTableName="linie"/>
-
         <addForeignKeyConstraint baseColumnNames="id_nomenclator"
                                  baseTableName="linie"
                                  constraintName="nomenclator_linie"
@@ -65,7 +63,6 @@
                                  onUpdate="NO ACTION"
                                  referencedColumnNames="id"
                                  referencedTableName="nomenclator"/>
-
         <addForeignKeyConstraint baseColumnNames="id_nomenclator"
                                  baseTableName="camp"
                                  constraintName="nomenclator_camp"

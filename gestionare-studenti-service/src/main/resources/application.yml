@@ -27,3 +27,30 @@ eureka:
     server:
       waitTimeInMsWhenSyncEmpty: 0
 
+keycloak:
+  realm: universitate
+  auth-server-url: http://localhost:9000/auth
+  ssl-required: external
+  resource: andrei-demo
+  bearer-only: true
+  credentials:
+    secret: a1735132-a862-4282-814f-1728ade599fe
+  use-resource-role-mappings: true
+  principal-attribute: preffered_username
+  security-constraints:
+    - authRoles:
+        - ROLE_ADMIN
+      securityCollections:
+        - patterns:
+            - /nomenclatoare/**
+    - authRoles:
+        - ROLE_PROFESOR
+      securityCollections:
+        - patterns:
+            - /nomenclatoare/save-linii
+    - authRoles:
+        - ROLE_STUDENT
+      securityCollections:
+        - patterns:
+            - /nomenclatoare/save-linii
+
