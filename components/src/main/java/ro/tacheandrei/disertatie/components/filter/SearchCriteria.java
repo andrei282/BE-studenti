@@ -15,33 +15,11 @@ public class SearchCriteria {
 
     private Map<String, String> extraProps;
 
-    public SearchCriteria(String columnName, SearchOperation searchOperation) {
-        this.columnName = columnName;
-        this.searchOperation = searchOperation;
-        this.filterType = FilterType.COMMON;
-    }
-
     public SearchCriteria(String columnName, Object filter, SearchOperation searchOperation, FilterType filterType) {
         this.columnName = columnName;
         this.filter = filter;
         this.searchOperation = searchOperation;
         this.filterType = filterType;
-    }
-
-    public SearchCriteria(Object columnName, Object filter, SearchOperation searchOperation, FilterType filterType) {
-        this.columnName = columnName;
-        this.filter = filter;
-        this.searchOperation = searchOperation;
-        this.filterType = filterType;
-    }
-
-
-    public SearchCriteria(String columnName, Object filter, SearchOperation searchOperation, FilterType filterType, Map<String, String> extra) {
-        this.columnName = columnName;
-        this.filter = filter;
-        this.searchOperation = searchOperation;
-        this.filterType = filterType;
-        this.extraProps = extra;
     }
 
     public Path getPathExpression(Root root){

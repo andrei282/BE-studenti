@@ -29,17 +29,8 @@ public class GenericSpecification<T> implements Specification<T> {
             filter = entry.getValue().get("filter");
             searchOperation = SearchOperation.getValue(entry.getValue().get("type"));
             filterType = FilterType.getValue(entry.getValue().get("filterType"));
-
-            if (filterType.equals(FilterType.DATE)) {
-                filter = entry.getValue().get("dateFrom");
-                this.searchCriteriaList.add(new SearchCriteria(columnName, filter, searchOperation, filterType));
-            } else {
-                this.searchCriteriaList.add(new SearchCriteria(columnName, filter, searchOperation, filterType));
-            }
+            this.searchCriteriaList.add(new SearchCriteria(columnName, filter, searchOperation, filterType));
         }
-    }
-
-    public GenericSpecification() {
     }
 
     public void addExtraCriteria(final List<SearchCriteria> extra) {
@@ -47,14 +38,6 @@ public class GenericSpecification<T> implements Specification<T> {
         this.searchCriteriaList.addAll(extra);
     }
 
-    public void addExtraCriteria(SearchCriteria extra) {
-        this.searchCriteriaList.add(extra);
-    }
-
-
-    public List<SearchCriteria> getSearchCriteriaList() {
-        return searchCriteriaList;
-    }
 
     @Override
     public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {

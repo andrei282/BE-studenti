@@ -42,8 +42,9 @@ public class NomenclatoareGridService {
     public TableListDTO<Page<Nomenclator>> cautaNomenclatoare(PageRequestDTO pageRequest) {
 
         PageRequest defaultPageRequest = PageRequest.of(0, 10, Sort.by("id").descending());
+        GenericSpecification<Nomenclator> genericSpecification = new GenericSpecification<>(pageRequest.getFilterModel());
 
-        Page<Nomenclator> pagedResult = nomenclatorRepository.findAll(defaultPageRequest);
+        Page<Nomenclator> pagedResult = nomenclatorRepository.findAll(genericSpecification, defaultPageRequest);
 
         return new TableListDTO<>(pagedResult, HeaderTableService.calculeazaColoaneTabel(Nomenclator.class));
     }

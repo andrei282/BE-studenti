@@ -4,11 +4,7 @@ import java.util.Arrays;
 
 public enum FilterType {
     TEXT("text"),
-    NUMBER("number"),
-    DATE("date"),
-    UUID("uuid"),
-    COMMON("common"),
-    CUSTOM("custom");
+    NUMBER("number");
 
     public String type;
 
